@@ -33,20 +33,32 @@ namespace TCU
             string scenePath = _path;
 
             // Load the scene resource
-            var scene = GD.Load<PackedScene>(scenePath);
-            if (scene != null)
+            try
             {
-                GD.Print("Quick Open: " + scenePath);
-                // Get the EditorNode instance
-                var editorInterface = EditorInterface.Singleton;
+                var scene = GD.Load<PackedScene>(scenePath);
+                if (scene != null)
+                {
+                    GD.Print("Quick Open: " + scenePath);
+                    // Get the EditorNode instance
+                    var editorInterface = EditorInterface.Singleton;
 
-                // Open the scene
-                editorInterface.OpenSceneFromPath(scenePath);
+                    // Open the scene
+                    editorInterface.OpenSceneFromPath(scenePath);
+                }
+                else
+                {
+                    GD.PrintErr($"Failed to load scene: {scenePath}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                GD.PrintErr($"Failed to load scene: {scenePath}");
+                GD.PrintErr($"Failed to load scene: {ex.Message}");
+                GD.PrintErr("Attempted to open from active scenes");
+                var editorInterface = EditorInterface.Singleton;
+                var strings = editorInterface.GetOpenScenes();
+                GD.PrintErr(strings);
             }
+
         }
     }
     
