@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿#if TOOLS
+using Godot;
 using System;
 
 
@@ -64,3 +65,5 @@ namespace TCU
     
 
 }
+
+#endif
